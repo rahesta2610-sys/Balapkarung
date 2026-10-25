@@ -83,11 +83,19 @@ ol{text-align:left;font-size:20px;font-weight:600;padding-left:30px}
 #qp img.zm{max-height:none;cursor:zoom-out}#qp button img{max-height:70px;cursor:inherit}
 .ierr{font-size:13px;color:#a33;font-weight:600}
 #qp .katex{font-size:1.08em}#qp .katex-display{margin:.3em 0;overflow-x:auto;overflow-y:hidden}
+#spec{position:absolute;left:8px;right:8px;bottom:10px;display:none;flex-direction:column;gap:6px;align-items:center}
+#chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+#sl{position:absolute;left:8px;top:62px;display:none;background:#0006;color:#fff;font-weight:700;font-size:13px;padding:4px 8px;border-radius:10px;pointer-events:none;max-width:48vw}
+#tiles{position:fixed;inset:0;z-index:2;pointer-events:none;display:none}
+.tf{position:absolute;border:2px solid #ffffffaa;box-sizing:border-box}
+.tl{position:absolute;left:6px;color:#fff;font-weight:800;font-size:12px;background:#0007;border:2px solid;border-radius:10px;padding:1px 8px;white-space:nowrap;max-width:calc(100% - 12px);overflow:hidden;text-overflow:ellipsis}
+body.q-low #sun{display:none}body.q-low #bg{filter:none!important}
+#s-home{justify-content:flex-start;overflow-y:auto}#s-home>:first-child{margin-top:auto}#s-home>:last-child{margin-bottom:auto}
 </style></head><body>
 <div id="bg"></div><div id="sun"><i class="halo"></i><i class="disc"></i></div>
 
 <div class="scr on" id="s-home"><h1>BALAP KARUNG 3D</h1><p style="font-weight:700">Lompat, jawab soal, capai garis finish!</p>
-<div class="pil"><b>📚 Pilih Soal</b><select id="mp"></select><select id="mtr"></select><div id="hinfo" style="font-weight:600;font-size:14px"></div></div>
+<div class="pil"><b>📚 Pilih Soal</b><select id="mp"></select><select id="mtr"></select><div id="hinfo" style="font-weight:600;font-size:14px"></div><div class="row" style="align-items:center;gap:8px"><b>⚙️ Grafik</b><select id="gq" style="min-width:0"><option value="auto">🤖 Otomatis</option><option value="low">🪫 Rendah</option><option value="med">⚖️ Sedang</option><option value="high">✨ Tinggi</option></select></div><div id="gqi" style="font-weight:600;font-size:12px"></div></div>
 <button class="btn" data-mode="latih">🏃 Berlatih</button>
 <button class="btn alt" data-mode="ai">🤖 Lawan AI</button>
 <button class="btn" data-mode="room" style="background:#8e44ad;box-shadow:0 5px 0 #51236a">👥 Room</button></div>
@@ -103,21 +111,21 @@ ol{text-align:left;font-size:20px;font-weight:600;padding-left:30px}
 <button class="btn alt" id="rm-join">Gabung</button></div></div>
 
 <div class="scr" id="s-soal"><div class="card"><h2>Pilih Soal</h2>
-<select id="lv"></select><select id="wt"><option value="cerah">☀️ Cerah</option><option value="berawan">⛅ Berawan</option><option value="mendung">☁️ Mendung</option><option value="hujan">🌧️ Hujan</option><option value="badai">⛈️ Hujan + Halilintar</option><option value="salju">❄️ Musim Salju</option><option value="semi">🌸 Musim Semi</option><option value="acak">🎲 Acak</option></select><div id="rnw" style="display:none;flex-direction:column;gap:8px;align-items:center"><div class="wl">🏁 Jumlah pertandingan &amp; cuaca tiap pertandingan</div><select id="rn"></select><div id="wl" style="display:flex;flex-direction:column;gap:6px;align-items:center"></div></div><div id="sinfo" style="font-weight:600"></div>
+<select id="lv"></select><select id="wt"><option value="cerah">☀️ Cerah</option><option value="berawan">⛅ Berawan</option><option value="mendung">☁️ Mendung</option><option value="hujan">🌧️ Hujan</option><option value="badai">⛈️ Hujan + Halilintar</option><option value="salju">❄️ Musim Salju</option><option value="semi">🌸 Musim Semi</option><option value="acak">🎲 Acak</option></select><div id="rnw" style="display:none;flex-direction:column;gap:8px;align-items:center"><div class="wl">👤 Peran kamu di room ini</div><select id="role"><option value="play">🎮 Ikut bermain</option><option value="spec">👁️ Pemantau saja (mengatur &amp; menyaksikan)</option></select><div class="wl">🏁 Jumlah pertandingan &amp; cuaca tiap pertandingan</div><select id="rn"></select><div id="wl" style="display:flex;flex-direction:column;gap:6px;align-items:center"></div></div><div id="sinfo" style="font-weight:600"></div>
 <button class="btn" id="so-ok">Mulai</button></div></div>
 
 <div class="scr" id="s-lobby"><div class="card"><h2>Ruang Tunggu</h2>
-<div style="font-size:44px;font-weight:800;color:#ff7a1a" id="lc"></div><button class="btn sm" id="lcopy">📋 Salin Kode</button><div id="lr" style="font-weight:700;font-size:17px"></div>
+<div style="font-size:44px;font-weight:800;color:#ff7a1a" id="lc"></div><button class="btn sm" id="lcopy">📋 Salin Kode</button><div id="lr" style="font-weight:700;font-size:17px"></div><div id="lsp" style="font-weight:700;color:#8e44ad"></div>
 <ol id="lp"></ol><button class="btn" id="lstart">Mulai Balapan</button>
 <div id="lw" style="font-weight:600">Menunggu pembuat room memulai…</div></div></div>
 
 <div class="scr" id="s-end"><div class="card"><h1 style="font-size:40px" id="et">🏆 JUARA!</h1><h2 id="wn"></h2><div id="sk"></div><ol id="rk"></ol><div id="rt" style="display:none;width:100%"><b>📊 Klasemen (akumulasi poin)</b><ol id="tt"></ol><div id="rw" style="font-weight:600;font-size:15px"></div><button class="btn" id="rnext" style="display:none">▶ Ronde Berikutnya</button></div>
 <div class="row"><button class="btn" id="next" style="display:none">Level Berikutnya</button><button class="btn" id="again">Main Lagi</button><button class="btn alt" id="menu">Menu</button></div></div></div>
 
-<div id="hud"><div id="top"><div id="rank"></div><div id="pts"></div><div id="prog"></div></div>
+<div id="hud"><div id="sl"></div><div id="spec"><div id="chips"></div><button class="btn sm alt" id="svm">🔲 Multi-kamera</button></div><div id="top"><div id="rank"></div><div id="pts"></div><div id="prog"></div></div>
 <div id="sp"><div id="spt"></div><div id="spb"><b></b><u style="left:49%"></u></div></div><div id="en"><div id="ent"></div><div id="enb"><b></b><u style="left:50%"></u><u style="left:20%"></u></div></div>
 <button class="btn sm" id="cb">📷 Auto</button><button class="btn sm" id="mt" style="position:absolute;right:8px;top:92px">🔊</button><button id="tap">LOMPAT!</button></div>
-<div id="cm"></div><div id="feed"></div><div id="qp"></div><div id="big"></div><div id="card"></div><div id="toast"></div><div id="cele"></div>
+<div id="cm"></div><div id="feed"></div><div id="qp"></div><div id="big"></div><div id="card"></div><div id="toast"></div><div id="cele"></div><div id="tiles"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
@@ -208,8 +216,21 @@ function fixImgs(el){el.querySelectorAll('img').forEach(i=>{i.onerror=()=>{const
 const shuf=a=>{for(let i=a.length;i>1;){const j=Math.random()*i--|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const nextQ=()=>S.soal[S.qi++%S.soal.length];
 
+// ===== KUALITAS GRAFIK =====
+const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const QP={
+ low :{pr:.75,sh:0,sm:512,trees:50,clouds:8,crowd:5,birds:0,rain:.3,hzw:1024,fx:.3,tiles:2,aa:0,half:1,lite:1},
+ med :{pr:1,sh:1,sm:512,trees:120,clouds:16,crowd:9,birds:5,rain:.6,hzw:2048,fx:.6,tiles:4,aa:1,half:0,lite:0},
+ high:{pr:Math.min(window.devicePixelRatio||1,2),sh:1,sm:1024,trees:210,clouds:30,crowd:14,birds:12,rain:1,hzw:2048,fx:1,tiles:6,aa:1,half:0,lite:0}};
+const QN={low:'Rendah',med:'Sedang',high:'Tinggi'},QD={low:'30 fps, tanpa bayangan, objek minimal',med:'bayangan ringan, objek dikurangi',high:'bayangan & detail penuh'};
+function autoTier(){const m=navigator.deviceMemory||4,c=navigator.hardwareConcurrency||4,mob=/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
+ if(m<=2||(c<=4&&m<=3))return'low';if(m<=4||c<=4||mob)return'med';return'high'}
+let QS=lsGet('kualitas');if(!['auto','low','med','high'].includes(QS))QS='auto';
+let QT=QS=='auto'?autoTier():QS,Q=QP[QT];const AA0=!!Q.aa;
+let fr=0,rdt=0,fA=0,fN=0;
+
 // ===== THREE =====
-const R=new THREE.WebGLRenderer({antialias:true,alpha:true});R.setClearColor(0x000000,0);R.setPixelRatio(Math.min(devicePixelRatio,2));R.shadowMap.enabled=true;document.body.prepend(R.domElement);
+const R=new THREE.WebGLRenderer({antialias:AA0,alpha:true});R.setClearColor(0x000000,0);R.setPixelRatio(Math.min(Q.pr,devicePixelRatio||1));R.shadowMap.enabled=true;document.body.prepend(R.domElement);
 const sc=new THREE.Scene();sc.fog=new THREE.Fog(0xbfe9a8,70,230);
 const cam=new THREE.PerspectiveCamera(60,1,.1,500),look=new THREE.Vector3();cam.position.set(0,6,14);
 const hemi=new THREE.HemisphereLight(0xffffff,0x6bbf59,.95);sc.add(hemi);
@@ -243,7 +264,7 @@ function drawTree(g,x,y,th,col,kind,r){g.fillStyle=col;g.strokeStyle=col;
  else if(kind=='pine'){g.fillRect(x-th*.02,y-th*.18,th*.04,th*.18);for(let k=0;k<4;k++){const yy=y-th*.12-k*th*.2,ww=th*.2*(1-k*.2);g.beginPath();g.moveTo(x,yy-th*.28);g.lineTo(x+ww,yy);g.lineTo(x-ww,yy);g.fill()}}
  else{g.fillRect(x-th*.025,y-th*.4,th*.05,th*.4);const rx=th*.2*(.85+r*.4);[[0,.62,1],[-.55,.5,.7],[.55,.5,.7]].forEach(([ox,oy,k])=>{g.beginPath();g.ellipse(x+ox*rx,y-th*oy,rx*k,th*.28*k,0,0,6.283);g.fill()})}}
 let hzTex=null;
-function treeLineTex(){return hzTex||(hzTex=tex(2048,256,(g,w,h)=>{
+function treeLineTex(){return hzTex||(hzTex=tex(Q.hzw,Q.hzw/8,(g,w,h)=>{
  const rd=i=>{const x=Math.sin(i*91.7+13.3)*43758.5;return x-Math.floor(x)};
  [{c:'#8fb2a6',n:48,hs:.46,pal:.2},{c:'#62a07a',n:40,hs:.64,pal:.3},{c:'#2e6e45',n:34,hs:.82,pal:.42}].forEach((L,li)=>{
   g.fillStyle=L.c;const bs=h*(.1+li*.03);g.fillRect(0,h-bs,w,bs);
@@ -253,7 +274,7 @@ function horizonTrees(){const t=treeLineTex(),R0=300,Hc=36;t.wrapS=THREE.RepeatW
  const m=new THREE.Mesh(new THREE.CylinderGeometry(R0,R0,Hc,72,1,true),new THREE.MeshBasicMaterial({map:t,transparent:true,side:THREE.BackSide,fog:false,depthWrite:false}));
  m.position.y=TK.min-.4+Hc/2;m.renderOrder=-1;m.frustumCulled=false;world.add(m);world.hz=m}
 function buildWorld(n){
- if(world)sc.remove(world);world=new THREE.Group();sc.add(world);buildTrack(S.lv||1);
+ if(world){sc.remove(world);disposeWorld(world)}world=new THREE.Group();sc.add(world);buildTrack(S.lv||1);
  const W=n*2.2+1.2,rnd=(i)=>{const x=Math.sin(i*127.1)*43758.5;return x-Math.floor(x)};
  const gr=new THREE.Mesh(new THREE.PlaneGeometry(1600,1600),mat(0x6bbf59));gr.rotation.x=-Math.PI/2;gr.position.set(0,TK.min-.4,-L/2);world.add(gr);world.gr2=gr;horizonTrees();
  world.gr=ribbon(0,130,-.05,0xffffff);world.gr.material.color.set(0x6bbf59);world.cones=[];world.cl=[];
@@ -266,13 +287,13 @@ function buildWorld(n){
  box(W,.02,1,0xffffff,fx,fy+.03,-L,world).material=new THREE.MeshLambertMaterial({map:ck});
  box(.4,6,.4,0xdd3333,fx-W/2-.3,fy+3,-L,world);box(.4,6,.4,0xdd3333,fx+W/2+.3,fy+3,-L,world);
  const bn=new THREE.Mesh(new THREE.PlaneGeometry(W+1,1.6),new THREE.MeshBasicMaterial({map:tex(512,128,(g,w,h)=>{g.fillStyle='#ff7a1a';g.fillRect(0,0,w,h);g.fillStyle='#fff';g.font='800 90px sans-serif';g.textAlign='center';g.fillText('FINISH',w/2,100)}),side:2}));bn.position.set(fx,fy+5.4,-L);world.add(bn);
- for(let i=0;i<210;i++){const s=i%2?1:-1,z=12-rnd(i+9)*(L+60),p=-z,t=new THREE.Group();
+ for(let i=0;i<Q.trees;i++){const s=i%2?1:-1,z=12-rnd(i+9)*(L+60),p=-z,t=new THREE.Group();
   box(.5,2,.5,0x7a4a21,0,1,0,t);const c=new THREE.Mesh(new THREE.ConeGeometry(1.7,4.5,8),mat(0x1f8a4a));c.position.y=4;c.castShadow=true;t.add(c);world.cones.push(c);t.position.set(tx(p)+s*(W/2+4+rnd(i)*16),th(p),z);t.scale.setScalar(.8+rnd(i+3)*.8);world.add(t)}
  for(let i=0;i<7;i++){const m=new THREE.Mesh(new THREE.ConeGeometry(30+rnd(i)*25,40+rnd(i+5)*30,6),mat(i%2?0x4d8a6a:0x5a9a78));m.position.set((i-3)*60,15,-L-90-rnd(i+2)*40);world.add(m)}
- for(let i=0;i<30;i++){const c=new THREE.Group();for(let k=0;k<4;k++){const r=3+rnd(i+k)*2,s=new THREE.Sprite(new THREE.SpriteMaterial({map:softTex(),transparent:true,opacity:.9,depthWrite:false,fog:false}));s.userData.sx=r*3.6;s.userData.sy=r*2.4;s.scale.set(s.userData.sx,s.userData.sy,1);s.position.set(k*3.5,rnd(k)*1.5,0);c.add(s);world.cl.push(s)}c.userData.v=.8+rnd(i+3)*1.4;(world.cg=world.cg||[]).push(c);c.position.set((rnd(i)-.5)*300,30+rnd(i+4)*15+TK.min,-rnd(i+7)*(L+80));world.add(c)}
+ for(let i=0;i<Q.clouds;i++){const c=new THREE.Group();for(let k=0;k<4;k++){const r=3+rnd(i+k)*2,s=new THREE.Sprite(new THREE.SpriteMaterial({map:softTex(),transparent:true,opacity:.9,depthWrite:false,fog:false}));s.userData.sx=r*3.6;s.userData.sy=r*2.4;s.scale.set(s.userData.sx,s.userData.sy,1);s.position.set(k*3.5,rnd(k)*1.5,0);c.add(s);world.cl.push(s)}c.userData.v=.8+rnd(i+3)*1.4;(world.cg=world.cg||[]).push(c);c.position.set((rnd(i)-.5)*300,30+rnd(i+4)*15+TK.min,-rnd(i+7)*(L+80));world.add(c)}
  world.crowd=[];const cc=[0xe63946,0x1d6fe6,0xf2c200,0x8e44ad,0x16a085,0xffffff];
- for(let s=-1;s<=1;s+=2)for(let r=0;r<2;r++)for(let i=0;i<14;i++){const g=new THREE.Group();box(.6,.8,.4,cc[(i+r*3)%6],0,.4,0,g);box(.5,.5,.5,0xffd2a1,0,1.05,0,g);g.position.set(fx+s*(W/2+2.5+r*1.1),fy+r*.5,-L+8-i*1.6);g.rotation.y=-s*1.5;g.userData.p=i;g.userData.y0=fy+r*.5;world.add(g);world.crowd.push(g)}
- world.birds=[];for(let i=0;i<12;i++){const b=new THREE.Group(),c=i%3?0x333333:0xffffff,wl=new THREE.Group(),wr=new THREE.Group();
+ for(let s=-1;s<=1;s+=2)for(let r=0;r<2;r++)for(let i=0;i<Q.crowd;i++){const g=new THREE.Group();box(.6,.8,.4,cc[(i+r*3)%6],0,.4,0,g);box(.5,.5,.5,0xffd2a1,0,1.05,0,g);g.position.set(fx+s*(W/2+2.5+r*1.1),fy+r*.5,-L+8-i*1.6);g.rotation.y=-s*1.5;g.userData.p=i;g.userData.y0=fy+r*.5;world.add(g);world.crowd.push(g)}
+ world.birds=[];for(let i=0;i<Q.birds;i++){const b=new THREE.Group(),c=i%3?0x333333:0xffffff,wl=new THREE.Group(),wr=new THREE.Group();
   box(.3,.2,.6,c,0,0,0,b);box(.16,.16,.2,c,0,.05,-.35,b);box(.9,.03,.4,c,-.45,0,0,wl);box(.9,.03,.4,c,.45,0,0,wr);b.add(wl,wr);b.traverse(o=>o.castShadow=false);
   b.userData={wl,wr,p:rnd(i)*(L+80)-20,sp:4+rnd(i+2)*4,off:(rnd(i+5)-.5)*40,ph:rnd(i+7)*6,h:9+rnd(i+9)*9};world.add(b);world.birds.push(b)}
 }
@@ -306,7 +327,7 @@ function note(t,ok){const d=document.createElement('div');d.className='nt '+(ok?
 function toast(t){const e=$('toast');e.textContent=t;e.classList.remove('s');void e.offsetWidth;e.classList.add('s')}
 function fallP(r){const t=terr(r.p);return((t.n?.03:0)+(t.d?.04:0)+(t.l?.07:0))*(1+Math.max(0,(r.vm||0)-3.2)*.5)}
 function slipMsg(r){const t=terr(r.p);if(r==me){toast(t.l?'Terpeleset! 🧊':t.n?'Terjatuh di tanjakan! ⛰️':'Terguling di turunan! 🛝');say(t.l?'Aduh, terpeleset di jalan licin!':'Hati-hati, medannya berbahaya!')}else note(r.n+(t.l?' terpeleset! 🧊':' terjatuh! 💥'),0)}
-function hopR(r){if(state!='race'||r.hop>0||r.fall>0||r.q||r.fin||r.e<=0||r.remote)return;r.hop=HOPT;const t=terr(r.p);r.hopFrom=r.p;r.tgt=Math.min(L,r.p+HOP*(t.n?.65:1)*(t.d?1.3:1)*(t.l?1.15:1));r.e=Math.max(0,r.e-COST*(t.n?1.5:1)*(t.d?.8:1));if(!r.ai)snd(300+Math.random()*60,.06,'square',.03)}
+function hopR(r){if(!r||state!='race'||r.hop>0||r.fall>0||r.q||r.fin||r.e<=0||r.remote)return;r.hop=HOPT;const t=terr(r.p);r.hopFrom=r.p;r.tgt=Math.min(L,r.p+HOP*(t.n?.65:1)*(t.d?1.3:1)*(t.l?1.15:1));r.e=Math.max(0,r.e-COST*(t.n?1.5:1)*(t.d?.8:1));if(!r.ai)snd(300+Math.random()*60,.06,'square',.03)}
 function finish(r){r.fin=r.fin||Date.now();if(winner)return;
  if(S.mode=='room'&&!r.remote){if(!r.claim){r.claim=1;claimWin(r)}return}
  winner=r;endRace()}
@@ -335,11 +356,13 @@ function camGoal(F,m){const P=F.G.position,a0=F.G.rotation.y,fx=-Math.sin(a0),fz
  if(m=='wide')return[V(-11,-15,8),V(10,2,1)];
  if(m=='back')return[V(-4.8,1.4,2.9),V(7,0,1.3)];
  if(m=='side')return[V(1.5,-8,2.2),V(1.5,0,1.3)];
+ if(m=='front')return[V(9,1.2,2.4),V(0,0,1.5)];
+ if(m=='sky')return[V(-7,0,20),V(8,0,0)];
  if(m=='close')return[V(3,.9,1.9),V(0,0,1.8)];
  const a=T*.9;return[[P.x+Math.sin(a)*5.5,P.y+2.6,P.z-Math.cos(a)*5.5],[P.x,P.y+1.7,P.z]]}
 function updCam(dt){
  const F=camFocus||me||racers[0];if(!F)return;
- if(camAuto&&state=='race'){camT-=dt;if(camT<=0){const seq=['back','side','wide','back','close','side'],d=[8,7,6.5,8,5,7];camMode=seq[camIdx%6];camT=d[camIdx%6];camIdx++}}
+ if(camAuto&&state=='race'){camT-=dt;if(camT<=0){const seq=S.spec?['back','side','front','sky','close','wide']:['back','side','wide','back','close','side'],d=S.spec?[6,6,6,6,5,6]:[8,7,6.5,8,5,7];camMode=seq[camIdx%6];camT=d[camIdx%6];if(S.spec&&specAuto&&racers.length)camFocus=racers[camIdx%racers.length];camIdx++}}
  const[p,l]=camGoal(F,camMode),k=Math.min(1,dt*(camMode=='close'?2.8:1.8));
  cam.position.lerp(new THREE.Vector3(...p),k);look.lerp(new THREE.Vector3(...l),Math.min(1,dt*3));cam.lookAt(look);
  const P=F.G.position;sun.position.set(P.x+18,P.y+40,P.z+14);sun.target.position.copy(P)}
@@ -353,7 +376,7 @@ function applyWeather(k){const w=WX[k]||WX.cerah;wxN=WX[k]?k:'cerah';bgW(w);sc.f
  if(w.gr){world.gr.material.color.set(w.gr);world.gr2.material.color.set(w.gr)}if(w.co)world.cones.forEach(c=>c.material.color.set(w.co));
  world.cl.forEach((m,i)=>{m.visible=i%10<Math.round(w.cl*10);m.scale.set(m.userData.sx*Math.max(1,w.cl),m.userData.sy*Math.max(1,w.cl),1);m.material.color.set(w.cc||0xffffff)});
  world.birds.forEach(b=>b.visible=w.p!='rain');if(wxP){sc.remove(wxP);wxP=null}
- if(w.p){const n=w.p=='rain'?1800:900,g=new THREE.BufferGeometry(),a=new Float32Array(n*3);for(let i=0;i<n*3;i+=3){a[i]=(Math.random()-.5)*50;a[i+1]=Math.random()*22;a[i+2]=(Math.random()-.5)*50}
+ if(w.p){const n=Math.round((w.p=='rain'?1800:900)*Q.rain),g=new THREE.BufferGeometry(),a=new Float32Array(n*3);for(let i=0;i<n*3;i+=3){a[i]=(Math.random()-.5)*50;a[i+1]=Math.random()*22;a[i+2]=(Math.random()-.5)*50}
   g.setAttribute('position',new THREE.BufferAttribute(a,3));
   wxP=new THREE.Points(g,new THREE.PointsMaterial({color:{rain:0xb4d8ff,snow:0xffffff,petal:0xff9ec8}[w.p],size:w.p=='rain'?.14:w.p=='snow'?.28:.24,transparent:true,opacity:.85,depthWrite:false}));wxP.frustumCulled=false;wxP.kind=w.p;sc.add(wxP)}}
 function strike(){if(boltM){sc.remove(boltM);boltM=null}const x=cam.position.x+(Math.random()-.5)*60,z=cam.position.z-25-Math.random()*35,pts=[];let cx=x;
@@ -368,26 +391,26 @@ function updWx(dt){const w=WX[wxN];
 // ===== ALUR =====
 async function begin(list){
  winner=null;state='intro';stopCele();show('');$('hud').style.display='none';
- if(S.mode=='room')fb(S.code+'/players/'+S.id,'PATCH',{p:0,e:100,fin:null}).catch(()=>{});
- buildWorld(list.length);applyWeather(S.w);racers=list.map((l,i)=>mkRacer(l,i,list.length));me=racers.find(r=>r.id==S.id)||racers[0];
+ if(S.mode=='room'&&!S.spec)fb(S.code+'/players/'+S.id,'PATCH',{p:0,e:100,fin:null}).catch(()=>{});if(S.spec)setSpecView(false);
+ buildWorld(list.length);applyWeather(S.w);racers=list.map((l,i)=>mkRacer(l,i,list.length));me=S.spec?null:(racers.find(r=>r.id==S.id)||racers[0]);
  $('pts').textContent='⭐ 0 poin';$('prog').innerHTML=racers.map(r=>`<i style="background:${r.col};left:0"></i>`).join('');
- camAuto=false;camFocus=me;camMode='wide';cam.position.set(-16,8,14);look.set(0,1,-5);
+ camAuto=false;camFocus=me||racers[0];camMode='wide';cam.position.set(-16,8,14);look.set(0,1,-5);
  await sleep(900);
  applause(0,.8);
  for(const r of racers){camFocus=r;camMode='close';$('card').style.display='block';$('card').textContent='Lintasan '+(racers.indexOf(r)+1)+' • '+r.n;snd(520,.15);speak((r==racers[0]?'Selamat datang di lomba balap karung level '+S.lv+', medan '+LVN[S.lv]+'! ':'')+'Di lintasan '+(racers.indexOf(r)+1)+', '+r.n+'!',1);await sleep(2200)}
- $('card').style.display='none';fadeAp();camFocus=me;camMode='wide';await sleep(1000);
- camMode='back';$('hud').style.display='block';updEn();
+ $('card').style.display='none';fadeAp();camFocus=me||racers[0];camMode='wide';await sleep(1000);
+ camMode='back';$('hud').style.display='block';setSpecHud();updEn();
  for(const t of['3','2','1','GO!']){const b=$('big');b.textContent=t;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');snd(t=='GO!'?880:440,.25);if(t=='GO!'){speak('Mulai! Lompat yang tinggi!');applause(4500,.9)}await sleep(900)}
- $('big').textContent='';toast((S.mode=='room'&&S.n>1?'Ronde '+(S.cur+1)+'/'+S.n+' • ':'')+'Level '+S.lv+' • '+WX[wxN].e);state='race';cmN=T+7;lastLead=null;nearSaid=0;ap20=0;camAuto=true;camT=3;camIdx=1;
+ $('big').textContent='';toast((S.mode=='room'&&S.n>1?'Ronde '+(S.cur+1)+'/'+S.n+' • ':'')+'Level '+S.lv+' • '+WX[wxN].e);state='race';cmN=T+7;lastLead=null;nearSaid=0;ap20=0;camAuto=true;camT=3;camIdx=1;if(S.spec){specAuto=true;setSpecView(true)}
  if(S.mode=='room')syncTimer=setInterval(sync,220)}
-function updEn(){const e=me.e;$('enb').firstChild.style.width=e+'%';$('enb').firstChild.style.background=e>50?'#3ddc5a':e>20?'#f2c200':'#ff4a4a';$('ent').textContent='⚡ Tenaga '+Math.round(e)+'%'}
-function hud(){updEn();const t=terr(me.p),vm=me.vm||0,rk=(t.n||t.d||t.l)&&vm>3.2;$('spt').textContent=terrLabel(me.p)+' • 💨 '+vm.toFixed(1)+' m/dtk'+(rk?' ⚠️ rawan jatuh':'');const sb=$('spb').firstChild;sb.style.width=Math.min(100,vm/6.5*100)+'%';sb.style.background=rk?'#ff4a4a':vm>3.2?'#f2c200':'#3ddc5a';const s=racers.slice().sort((a,b)=>b.p-a.p);$('rank').textContent=racers.length>1?'Posisi '+(s.indexOf(me)+1)+'/'+racers.length:Math.round(me.p)+' / '+L+' m';
+function updEn(){if(!me)return;const e=me.e;$('enb').firstChild.style.width=e+'%';$('enb').firstChild.style.background=e>50?'#3ddc5a':e>20?'#f2c200':'#ff4a4a';$('ent').textContent='⚡ Tenaga '+Math.round(e)+'%'}
+function hud(){if(S.spec){hudSpec();return}updEn();const t=terr(me.p),vm=me.vm||0,rk=(t.n||t.d||t.l)&&vm>3.2;$('spt').textContent=terrLabel(me.p)+' • 💨 '+vm.toFixed(1)+' m/dtk'+(rk?' ⚠️ rawan jatuh':'');const sb=$('spb').firstChild;sb.style.width=Math.min(100,vm/6.5*100)+'%';sb.style.background=rk?'#ff4a4a':vm>3.2?'#f2c200':'#3ddc5a';const s=racers.slice().sort((a,b)=>b.p-a.p);$('rank').textContent=racers.length>1?'Posisi '+(s.indexOf(me)+1)+'/'+racers.length:Math.round(me.p)+' / '+L+' m';
  racers.forEach((r,i)=>$('prog').children[i].style.left=Math.min(100,r.p/L*100)+'%')}
-function endRace(){state='end';if(S.mode=='room')fb(S.code+'/players/'+S.id+'/rp/'+S.cur,'PUT',(me.pts||0)*MULT).catch(()=>{});clearInterval(syncTimer);winner.cel=1;clap(9500,1);celebrate();racers.forEach(r=>{if(r!=winner)r.fall=0});camFocus=winner;camMode='orbit';camAuto=false;
+function endRace(){state='end';if(S.mode=='room'&&me)fb(S.code+'/players/'+S.id+'/rp/'+S.cur,'PUT',(me.pts||0)*MULT).catch(()=>{});clearInterval(syncTimer);winner.cel=1;clap(9500,1);celebrate();racers.forEach(r=>{if(r!=winner)r.fall=0});camFocus=winner;camMode='orbit';camAuto=false;if(S.spec)setSpecView(false);
  $('hud').style.display='none';$('qp').classList.remove('on');fanfare();boom();speak(winner.n+' juara balap karung! Selamat!');
  if(S.mode=='room'&&me==winner)sync();
  setTimeout(()=>{$('wn').textContent=winner.n+(winner==me?' (Kamu!)':'');$('rk').innerHTML=racers.slice().sort((a,b)=>(b==winner)-(a==winner)||b.p-a.p).map(r=>`<li>${r.n} — ${Math.round(r.p)} m</li>`).join('');$('next').style.display=(S.mode!='room'&&winner==me&&S.lv<10)?'':'none';showScore();show('s-end');if(S.mode=='room'){const b=$('cele').querySelector('.bn');b&&b.remove();roomEnd()}else endUI0()},3500)}
-function showScore(){const b=me.ok||0,raw=me.pts||0,tot=raw*MULT;
+function showScore(){if(!me){$('sk').innerHTML='';return}const b=me.ok||0,raw=me.pts||0,tot=raw*MULT;
  $('sk').innerHTML='<div>✅ Benar: <b>'+b+'</b> soal × '+PT+' = <b>'+raw+'</b></div><div>⭐ '+raw+' × '+MULT+' = <b style="font-size:30px;color:#ff7a1a">'+tot+' poin</b></div><div id="sv" style="font-size:13px;font-weight:600"></div>';
  if(tot>0){$('sv').textContent='Menyimpan poin…';gas({action:'saveHasil',nama:S.name,kelas:S.kelas||'-',point:tot}).then(j=>{$('sv').textContent=j.status=='ok'?'💾 Tersimpan! Total poinmu: '+j.point_total:'⚠️ Gagal menyimpan poin'}).catch(()=>{$('sv').textContent='⚠️ Gagal menyimpan poin'})}}
 function celebrate(ttl){const c=$('cele');c.classList.add('on');
@@ -395,10 +418,10 @@ function celebrate(ttl){const c=$('cele');c.classList.add('on');
  for(let i=0;i<3;i++){const r=document.createElement('div');r.className='ring';r.style.animationDelay=i*.35+'s';c.appendChild(r)}
  const E=['🎉','🎊','⭐','🏅','👏','✨','🥳'];let k=0;clearInterval(celT);
  const add=()=>{const e=document.createElement('div');e.className='em';e.textContent=E[Math.random()*E.length|0];e.style.left=Math.random()*100+'%';e.style.fontSize=(22+Math.random()*26)+'px';e.style.animationDuration=(2.2+Math.random()*2)+'s';c.appendChild(e);setTimeout(()=>e.remove(),4500)};
- celT=setInterval(()=>{if(++k>60||state!='end'){clearInterval(celT);return}add();add()},130);
+ celT=setInterval(()=>{if(++k>60||state!='end'){clearInterval(celT);return}add();Q.fx>.5&&add()},130);
  for(let i=0;i<7;i++)setTimeout(()=>{if(state=='end')firework()},300+i*650)}
 let celT=0,fws=[];
-function firework(){if(!world||!winner)return;const n=90,g=new THREE.BufferGeometry(),pos=new Float32Array(n*3),vel=[],col=new Float32Array(n*3),c=new THREE.Color().setHSL(Math.random(),1,.6),
+function firework(){if(!world||!winner)return;const n=Math.round(90*Q.fx),g=new THREE.BufferGeometry(),pos=new Float32Array(n*3),vel=[],col=new Float32Array(n*3),c=new THREE.Color().setHSL(Math.random(),1,.6),
  o=new THREE.Vector3(winner.G.position.x+(Math.random()-.5)*16,winner.G.position.y+7+Math.random()*7,winner.G.position.z-2-Math.random()*8);
  for(let i=0;i<n;i++){pos.set([o.x,o.y,o.z],i*3);col.set([c.r,c.g,c.b],i*3);const a=Math.random()*6.283,b=Math.acos(2*Math.random()-1),v=4+Math.random()*3;vel.push(Math.sin(b)*Math.cos(a)*v,Math.cos(b)*v,Math.sin(b)*Math.sin(a)*v)}
  g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('color',new THREE.BufferAttribute(col,3));
@@ -406,7 +429,7 @@ function firework(){if(!world||!winner)return;const n=90,g=new THREE.BufferGeome
  snd(900+Math.random()*300,.15,'triangle',.05);setTimeout(()=>snd(160,.25,'sawtooth',.06),120)}
 function fwUpd(dt){for(let i=fws.length-1;i>=0;i--){const f=fws[i];f.t+=dt;const p=f.m.geometry.attributes.position;for(let j=0;j<p.count;j++){f.vel[j*3+1]-=6*dt;p.setXYZ(j,p.getX(j)+f.vel[j*3]*dt,p.getY(j)+f.vel[j*3+1]*dt,p.getZ(j)+f.vel[j*3+2]*dt)}p.needsUpdate=true;f.m.material.opacity=Math.max(0,1-f.t/1.8);if(f.t>1.8){world.remove(f.m);f.m.geometry.dispose();fws.splice(i,1)}}}
 function stopCele(){clearInterval(celT);$('cele').classList.remove('on');$('cele').innerHTML='';fws=[]}
-function boom(){const n=400,g=new THREE.BufferGeometry(),pos=new Float32Array(n*3),col=new Float32Array(n*3),c=new THREE.Color();
+function boom(){const n=Math.round(400*Q.fx),g=new THREE.BufferGeometry(),pos=new Float32Array(n*3),col=new Float32Array(n*3),c=new THREE.Color();
  for(let i=0;i<n;i++){pos.set([winner.G.position.x+(Math.random()-.5)*14,winner.G.position.y+6+Math.random()*10,winner.G.position.z+(Math.random()-.5)*14],i*3);c.setHSL(Math.random(),.9,.55);col.set([c.r,c.g,c.b],i*3)}
  g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('color',new THREE.BufferAttribute(col,3));
  g.userData={b:winner.G.position.y};confetti=new THREE.Points(g,new THREE.PointsMaterial({size:.35,vertexColors:true}));world.add(confetti)}
@@ -414,12 +437,12 @@ function boom(){const n=400,g=new THREE.BufferGeometry(),pos=new Float32Array(n*
 // ===== ROOM (Firebase REST) =====
 const fb=(p,m='GET',b)=>fetch(FB_URL+'/rooms/'+p+'.json',{method:m,body:b!==undefined?JSON.stringify(b):undefined}).then(r=>r.json());
 async function sync(){if(!S.code)return;try{
- await fb(S.code+'/players/'+S.id,'PATCH',{p:me.p,e:me.e,fin:me.fin||null});
+ if(me)await fb(S.code+'/players/'+S.id,'PATCH',{p:me.p,e:me.e,fin:me.fin||null});
  const [ps0,wid]=await Promise.all([fb(S.code+'/players'),fb(S.code+'/winners/'+S.cur)]),ps=ps0||{};
  racers.forEach(r=>{if(r.remote&&ps[r.id]){r.tp=ps[r.id].p||0;r.e=ps[r.id].e}});
  if(wid&&!winner){const w=racers.find(x=>x.id==wid);if(w){if(w.remote){w.p=w.tp=L;w.fin=w.fin||Date.now()}winner=w;endRace()}}}catch(e){}}
 let poll=0;
-async function lobby(){show('s-lobby');$('lc').textContent=S.code;$('lstart').style.display=S.host?'':'none';$('lw').style.display=S.host?'none':'';
+async function lobby(){show('s-lobby');$('lsp').textContent=S.spec?'👁️ Kamu sebagai pemantau (tidak ikut balapan)':'';$('lc').textContent=S.code;$('lstart').style.display=S.host?'':'none';$('lw').style.display=S.host?'none':'';
  clearInterval(poll);poll=setInterval(async()=>{try{const r=await fb(S.code);if(!r)return;const ps=Object.entries(r.players||{});
   $('lp').innerHTML=ps.map(([k,v])=>`<li>${esc(v.n)}</li>`).join('');const wsl=Object.values(r.ws||{});$('lr').textContent=wsl.length?'🏁 '+wsl.length+' pertandingan: '+wsl.map(w=>WX[w]?WX[w].e.split(' ')[0]:w).join(' '):'';
   if(r.st=='go'){clearInterval(poll);S.soal=r.soal||S.soal;S.qi=0;S.ws=Object.values(r.ws||{});if(!S.ws.length)S.ws=['cerah'];S.n=r.n||S.ws.length;S.cur=r.cur||0;S.w=S.ws[S.cur]||'cerah';S.lv=r.lv||1;S.rl=ps.sort((a,b)=>a[0]<b[0]?-1:1).map(([k,v])=>({id:k,n:v.n,g:v.g,remote:k!=S.id}));begin(S.rl.map(x=>({...x})))}}catch(e){}},1000)}
@@ -438,24 +461,24 @@ function openSoal(){show('s-soal');const rm=S.mode=='room';$('wt').style.display
 async function fillMateri(){const t=$('mtr');t.innerHTML='';t.add(new Option('📖 Semua materi',''));$('hinfo').textContent='Memuat materi…';const l=await loadMateri($('mp').value);l.forEach(m=>t.add(new Option(m,m)));$('hinfo').textContent=l.length?l.length+' materi tersedia':''}
 async function initHome(){const s=$('mp');s.innerHTML='<option>Memuat…</option>';$('hinfo').textContent='Memuat mata pelajaran…';const l=await loadMapel();s.innerHTML='';l.forEach(m=>s.add(new Option(m,m)));await fillMateri()}
 $('mp').onchange=fillMateri;
-$('so-ok').onclick=async()=>{$('sinfo').textContent='Memuat soal…';S.soal=shuf(await loadSoal($('mp').value,$('mtr').value));S.qi=0;S.lv=+$('lv').value;S.w=$('wt').value;if(S.w=='acak')S.w=shuf(Object.keys(WX))[0];
+$('so-ok').onclick=async()=>{$('sinfo').textContent='Memuat soal…';S.soal=shuf(await loadSoal($('mp').value,$('mtr').value));S.qi=0;S.spec=S.mode=='room'&&$('role').value=='spec';S.lv=+$('lv').value;S.w=$('wt').value;if(S.w=='acak')S.w=shuf(Object.keys(WX))[0];
  if(S.mode=='room'){S.ws=[...document.querySelectorAll('.wr')].map(x=>x.value=='acak'?shuf(Object.keys(WX))[0]:x.value);S.n=S.ws.length;S.cur=0;S.w=S.ws[0]}
- if(S.mode=='room'){S.code=String(1000+Math.random()*9000|0);S.host=true;await fb(S.code,'PUT',{st:'lobby',soal:S.soal,ws:S.ws,n:S.n,cur:0,lv:S.lv});await fb(S.code+'/players/'+S.id,'PUT',{n:S.name,g:S.g});lobby();return}
+ if(S.mode=='room'){S.code=String(1000+Math.random()*9000|0);S.host=true;await fb(S.code,'PUT',{st:'lobby',soal:S.soal,ws:S.ws,n:S.n,cur:0,lv:S.lv});if(!S.spec)await fb(S.code+'/players/'+S.id,'PUT',{n:S.name,g:S.g});lobby();return}
  const l=[{id:S.id,n:S.name,g:S.g}];if(S.mode=='ai')shuf(AINAMES.slice()).slice(0,3).forEach((n,i)=>l.push({id:'ai'+i,n,g:i%2?'P':'L',ai:1}));
  begin(l)};
 $('rm-new').onclick=openSoal;
-$('rm-join').onclick=async()=>{const c=$('rm-code').value.trim();if(!c)return;const r=await fb(c).catch(()=>null);if(!r)return toast('Room tidak ditemukan');S.code=c;S.host=false;await fb(c+'/players/'+S.id,'PUT',{n:S.name,g:S.g});lobby()};
+$('rm-join').onclick=async()=>{const c=$('rm-code').value.trim();if(!c)return;const r=await fb(c).catch(()=>null);if(!r)return toast('Room tidak ditemukan');S.code=c;S.host=false;S.spec=false;await fb(c+'/players/'+S.id,'PUT',{n:S.name,g:S.g});lobby()};
 $('lcopy').onclick=async()=>{const c=S.code,b=$('lcopy');let ok=false;
  try{await navigator.clipboard.writeText(c);ok=true}catch(e){try{const t=document.createElement('textarea');t.value=c;t.style.cssText='position:fixed;opacity:0';document.body.appendChild(t);t.select();ok=document.execCommand('copy');t.remove()}catch(e2){}}
  b.textContent=ok?'✅ Tersalin!':'⚠️ Gagal, salin manual';setTimeout(()=>b.textContent='📋 Salin Kode',1800)};
-$('lstart').onclick=()=>fb(S.code+'/st','PUT','go');
-$('cb').onclick=()=>{camAuto=!camAuto;if(!camAuto){const m=['back','side','wide','close'];camMode=m[(m.indexOf(camMode)+1)%4]||'back'}$('cb').textContent=camAuto?'📷 Auto':'📷 '+camMode};
+$('lstart').onclick=async()=>{const ps=await fb(S.code+'/players').catch(()=>null);if(!ps||!Object.keys(ps).length)return toast('Belum ada pemain yang bergabung');fb(S.code+'/st','PUT','go')};
+$('cb').onclick=()=>{camAuto=!camAuto;if(!camAuto){const m=S.spec?['back','side','front','close','sky','wide','orbit']:['back','side','wide','close'];camMode=m[(m.indexOf(camMode)+1)%m.length]||'back'}$('cb').textContent=camAuto?'📷 Auto':'📷 '+camMode};
 $('mt').onclick=()=>{muted=!muted;if(muted&&synN){try{synN.stop()}catch(e){}}$('mt').textContent=muted?'🔇':'🔊';if(muted){try{speechSynthesis.cancel()}catch(e){}AP.pause()}};
 $('tap').addEventListener('pointerdown',e=>{e.preventDefault();hopR(me)});
 addEventListener('keydown',e=>{if(e.code=='Space'||e.code=='ArrowUp'){e.preventDefault();hopR(me)}});
 $('again').onclick=()=>{S.qi=0;if(S.mode=='room'){show('s-home');S.code=''}else{const l=racers.map(r=>({id:r.id,n:r.n,g:r.g,ai:r.ai}));begin(l)}};
 $('next').onclick=()=>{S.lv++;$('again').onclick()};
-$('menu').onclick=()=>{clearInterval(rtmr);state='idle';stopCele();fadeAp();S.code='';show('s-home')};
+$('menu').onclick=()=>{clearInterval(rtmr);S.spec=false;setSpecView(false);setSpecHud();state='idle';stopCele();fadeAp();S.code='';show('s-home')};
 
 // ===== KLASEMEN ROOM (akumulasi) =====
 let rtmr=0;
@@ -483,13 +506,60 @@ function grand(rows){const c=rows[0];drawBoard(rows,true);$('et').textContent='�
  celebrate('👑 JUARA UMUM! 👑');clap(9500,1);fanfare();boom();speak(c.n+' juara umum! Selamat!');
  setTimeout(()=>{const b=$('cele').querySelector('.bn');b&&b.remove()},3500)}
 
+// ===== PEMANTAU (host tanpa ikut bermain) =====
+let specMulti=false,specAuto=true,angRot=0,angT=7,tilesKey='';const cams=[];
+const ANG=['back','side','front','close','sky','wide'],ANGN={back:'📹 Belakang',side:'📹 Samping',front:'📹 Depan',close:'🔍 Dekat',sky:'🛰️ Udara',wide:'🌐 Lebar'};
+function layout(n){const W=innerWidth,H=innerHeight;let c=1,r=1;
+ if(n==2){if(W>H)c=2;else r=2}else if(n>=3&&n<=4){c=2;r=2}else if(n>=5){if(W>H){c=3;r=2}else{c=2;r=3}}
+ const w=W/c,h=H/r;return Array.from({length:n},(_,i)=>[(i%c)*w,Math.floor(i/c)*h,w,h])}
+function setSpecView(on){specMulti=!!on&&!!S.spec;$('tiles').style.display=specMulti?'block':'none';tilesKey='';
+ sun.castShadow=!!Q.sh&&!specMulti;$('svm').textContent=specMulti?'🎥 Satu kamera':'🔲 Multi-kamera';
+ $('chips').style.display=specMulti?'none':'flex';$('sl').style.display=(S.spec&&!specMulti)?'block':'none'}
+function setSpecHud(){const sp=!!S.spec;['tap','en','sp','pts'].forEach(i=>$(i).style.display=sp?'none':'');
+ $('spec').style.display=sp?'flex':'none';if(!sp){$('sl').style.display='none';$('tiles').style.display='none';return}
+ $('chips').innerHTML='<button class="btn sm" data-r="auto">🎬 Auto</button>'+racers.map(r=>`<button class="btn sm" data-r="${r.id}" style="background:${r.col}">${esc(r.n)}</button>`).join('');
+ $('sl').style.display=specMulti?'none':'block'}
+$('chips').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.r=='auto'){specAuto=true;camAuto=true}else{specAuto=false;const r=racers.find(x=>x.id==b.dataset.r);if(r)camFocus=r}};
+$('svm').onclick=()=>setSpecView(!specMulti);
+function hudSpec(){const s=racers.slice().sort((a,b)=>b.p-a.p);
+ $('rank').textContent='👁️ Pemantau'+(S.n>1?' • Ronde '+(S.cur+1)+'/'+S.n:'');
+ $('sl').innerHTML=s.map((r,i)=>`<div><span style="color:${r.col}">●</span> ${i+1}. ${esc(r.n)} <b>${Math.round(r.p)}m</b> ⚡${Math.round(Math.max(0,r.e))}</div>`).join('');
+ racers.forEach((r,i)=>$('prog').children[i].style.left=Math.min(100,r.p/L*100)+'%')}
+function updTiles(tl,rc){const el=$('tiles'),key=tl.length+'x'+innerWidth+'x'+innerHeight;
+ if(key!=tilesKey){tilesKey=key;el.innerHTML=tl.map((r,i)=>{const[x,y,w,h]=rc[i];return`<div class="tf" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><span class="tl" style="top:${y==0?56:6}px;border-color:${r.col}"></span></div>`}).join('')}
+ tl.forEach((r,i)=>{el.children[i].firstChild.textContent=(r.fin?'🏁 ':'')+r.n+' • '+ANGN[ANG[(i+angRot)%ANG.length]]+' • '+Math.round(r.p)+'m'})}
+function renderMulti(dt){const tl=racers.slice(0,Math.min(6,Q.tiles)),rc=layout(tl.length);angT-=dt;if(angT<=0){angT=7;angRot++}
+ R.setScissorTest(true);
+ tl.forEach((r,i)=>{const[x,y,w,h]=rc[i],k=cams[i]||(cams[i]={c:new THREE.PerspectiveCamera(60,1,.1,500),look:new THREE.Vector3(),init:0});
+  const[pp,ll]=camGoal(r,ANG[(i+angRot)%ANG.length]);
+  if(!k.init){k.c.position.set(...pp);k.look.set(...ll);k.init=1}
+  k.c.position.lerp(new THREE.Vector3(...pp),Math.min(1,dt*2.2));k.look.lerp(new THREE.Vector3(...ll),Math.min(1,dt*3.5));
+  k.c.aspect=w/h;k.c.updateProjectionMatrix();k.c.lookAt(k.look);
+  if(world.hz){world.hz.position.x=k.c.position.x;world.hz.position.z=k.c.position.z}
+  if(wxP)wxP.position.set((k.c.position.x+k.look.x)/2,k.c.position.y-8,(k.c.position.z+k.look.z)/2);
+  const vy=innerHeight-y-h;R.setViewport(x,vy,w,h);R.setScissor(x,vy,w,h);R.render(sc,k.c)});
+ updTiles(tl,rc)}
+
+// ===== KUALITAS: terapkan & UI =====
+function applyQ(){R.setPixelRatio(Math.min(Q.pr,devicePixelRatio||1));R.setSize(innerWidth,innerHeight);
+ sun.castShadow=!!Q.sh&&!specMulti;
+ if(sun.shadow.mapSize.x!=Q.sm){sun.shadow.mapSize.set(Q.sm,Q.sm);if(sun.shadow.map){sun.shadow.map.dispose();sun.shadow.map=null}}
+ document.body.classList.toggle('q-low',!!Q.lite);hzTex=null}
+function updQHint(){$('gqi').textContent='Aktif: '+QN[QT]+(QS=='auto'?' (otomatis)':'')+' • '+QD[QT]}
+function downQ(){const o=['low','med','high'],i=o.indexOf(QT);if(i<=0)return;QT=o[i-1];Q=QP[QT];applyQ();toast('⚙️ Grafik diturunkan otomatis: '+QN[QT]);updQHint()}
+function initQUI(){$('gq').value=QS;updQHint();
+ $('gq').onchange=()=>{QS=$('gq').value;lsSet('kualitas',QS);QT=QS=='auto'?autoTier():QS;Q=QP[QT];
+  if(!!Q.aa!=AA0){location.reload();return}
+  applyQ();if(state=='idle'){buildWorld(3);applyWeather('cerah')}updQHint()}}
+function disposeWorld(w){w.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(m.map)m.map.dispose();m.dispose()})})}
+
 // ===== LOOP =====
-(function loop(){requestAnimationFrame(loop);const dt=Math.min(.05,clock.getDelta());T+=dt;
+(function loop(){requestAnimationFrame(loop);const dt=Math.min(.05,clock.getDelta());T+=dt;rdt+=dt;if(state=='race'){fA+=dt;fN++;if(fA>=3){if(QS=='auto'&&fA/fN>.043)downQ();fA=0;fN=0}}else{fA=0;fN=0}
  if(world){racers.forEach(r=>updR(r,dt));if(world.hz){world.hz.position.x=cam.position.x;world.hz.position.z=cam.position.z}world.cg&&world.cg.forEach(c=>{c.position.x+=c.userData.v*dt;if(c.position.x>175)c.position.x=-175});world.birds.forEach(b=>{const u=b.userData;u.p+=u.sp*dt;if(u.p>L+60)u.p=-30;b.position.set(tx(u.p)+u.off+Math.sin(T*.5+u.ph)*4,th(u.p)+u.h+Math.sin(T*.8+u.ph)*1.2,-u.p);u.wl.rotation.z=Math.sin(T*9+u.ph)*.7;u.wr.rotation.z=-u.wl.rotation.z});world.crowd.forEach(g=>g.position.y=g.userData.y0+Math.abs(Math.sin(T*4+g.userData.p))*(state=='end'?.5:.12));
   updWx(dt);fwUpd(dt);if(state=='race'){hud();comm()}
   if(confetti){const p=confetti.geometry.attributes.position;for(let i=0;i<p.count;i++){let y=p.getY(i)-dt*3;if(y<confetti.geometry.userData.b)y=confetti.geometry.userData.b+14;p.setY(i,y)}p.needsUpdate=true}}
  if(state=='idle'){cam.position.set(Math.sin(T*.2)*14,6,8);cam.lookAt(0,1,-10)}else updCam(dt);
- R.render(sc,cam)})();
+ if(Q.half&&(fr++&1)){}else if(S.spec&&specMulti&&world&&racers.length&&state!='idle'){const d2=rdt;rdt=0;renderMulti(d2)}else{rdt=0;R.setScissorTest(false);R.setViewport(0,0,innerWidth,innerHeight);R.render(sc,cam)}})();
 LVN.slice(1).forEach((n,i)=>$('lv').add(new Option('Level '+(i+1)+' — '+n,i+1)));
-buildWorld(3);applyWeather('cerah');initHome();
+applyQ();buildWorld(3);applyWeather('cerah');initHome();initQUI();
 </script></body></html>
