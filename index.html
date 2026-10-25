@@ -2,6 +2,7 @@
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>Balap Karung 3D</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
@@ -75,6 +76,13 @@ ol{text-align:left;font-size:20px;font-weight:600;padding-left:30px}
 #pts{position:absolute;right:0;top:0;font-weight:800;font-size:22px;color:#ffe46e;text-shadow:0 2px 0 #0007}
 #sk{display:flex;flex-direction:column;gap:2px;font-weight:700;font-size:18px;background:#fff3d6;border-radius:14px;padding:8px 16px}
 .pil{background:#fffdf4;border-radius:20px;padding:12px 16px;box-shadow:0 6px 0 #0002;display:flex;flex-direction:column;gap:8px;align-items:center}
+#s-end .card{max-height:94vh;overflow:auto}#tt{font-size:17px;font-weight:600;text-align:left;padding-left:26px}.wr{min-width:200px}.wl{font-size:13px;font-weight:700;text-align:center}
+#qp{max-height:80vh;overflow-y:auto}
+.qi{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+#qp img{max-width:100%;max-height:24vh;border-radius:10px;vertical-align:middle;cursor:zoom-in;background:#fff}
+#qp img.zm{max-height:none;cursor:zoom-out}#qp button img{max-height:70px;cursor:inherit}
+.ierr{font-size:13px;color:#a33;font-weight:600}
+#qp .katex{font-size:1.08em}#qp .katex-display{margin:.3em 0;overflow-x:auto;overflow-y:hidden}
 </style></head><body>
 <div id="bg"></div><div id="sun"><i class="halo"></i><i class="disc"></i></div>
 
@@ -95,15 +103,15 @@ ol{text-align:left;font-size:20px;font-weight:600;padding-left:30px}
 <button class="btn alt" id="rm-join">Gabung</button></div></div>
 
 <div class="scr" id="s-soal"><div class="card"><h2>Pilih Soal</h2>
-<select id="lv"></select><select id="wt"><option value="cerah">☀️ Cerah</option><option value="berawan">⛅ Berawan</option><option value="mendung">☁️ Mendung</option><option value="hujan">🌧️ Hujan</option><option value="badai">⛈️ Hujan + Halilintar</option><option value="salju">❄️ Musim Salju</option><option value="semi">🌸 Musim Semi</option><option value="acak">🎲 Acak</option></select><div id="sinfo" style="font-weight:600"></div>
+<select id="lv"></select><select id="wt"><option value="cerah">☀️ Cerah</option><option value="berawan">⛅ Berawan</option><option value="mendung">☁️ Mendung</option><option value="hujan">🌧️ Hujan</option><option value="badai">⛈️ Hujan + Halilintar</option><option value="salju">❄️ Musim Salju</option><option value="semi">🌸 Musim Semi</option><option value="acak">🎲 Acak</option></select><div id="rnw" style="display:none;flex-direction:column;gap:8px;align-items:center"><div class="wl">🏁 Jumlah pertandingan &amp; cuaca tiap pertandingan</div><select id="rn"></select><div id="wl" style="display:flex;flex-direction:column;gap:6px;align-items:center"></div></div><div id="sinfo" style="font-weight:600"></div>
 <button class="btn" id="so-ok">Mulai</button></div></div>
 
 <div class="scr" id="s-lobby"><div class="card"><h2>Ruang Tunggu</h2>
-<div style="font-size:44px;font-weight:800;color:#ff7a1a" id="lc"></div><button class="btn sm" id="lcopy">📋 Salin Kode</button>
+<div style="font-size:44px;font-weight:800;color:#ff7a1a" id="lc"></div><button class="btn sm" id="lcopy">📋 Salin Kode</button><div id="lr" style="font-weight:700;font-size:17px"></div>
 <ol id="lp"></ol><button class="btn" id="lstart">Mulai Balapan</button>
 <div id="lw" style="font-weight:600">Menunggu pembuat room memulai…</div></div></div>
 
-<div class="scr" id="s-end"><div class="card"><h1 style="font-size:46px">🏆 JUARA!</h1><h2 id="wn"></h2><div id="sk"></div><ol id="rk"></ol>
+<div class="scr" id="s-end"><div class="card"><h1 style="font-size:40px" id="et">🏆 JUARA!</h1><h2 id="wn"></h2><div id="sk"></div><ol id="rk"></ol><div id="rt" style="display:none;width:100%"><b>📊 Klasemen (akumulasi poin)</b><ol id="tt"></ol><div id="rw" style="font-weight:600;font-size:15px"></div><button class="btn" id="rnext" style="display:none">▶ Ronde Berikutnya</button></div>
 <div class="row"><button class="btn" id="next" style="display:none">Level Berikutnya</button><button class="btn" id="again">Main Lagi</button><button class="btn alt" id="menu">Menu</button></div></div></div>
 
 <div id="hud"><div id="top"><div id="rank"></div><div id="pts"></div><div id="prog"></div></div>
@@ -112,6 +120,8 @@ ol{text-align:left;font-size:20px;font-weight:600;padding-left:30px}
 <div id="cm"></div><div id="feed"></div><div id="qp"></div><div id="big"></div><div id="card"></div><div id="toast"></div><div id="cele"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/mhchem.min.js"></script>
 <script>
 // ===== KONFIGURASI (hardcode) =====
 const GAS_URL="https://script.google.com/macros/s/AKfycbzXYYXeeLxZUGS1b96P2fdE4_8nNjt58n6om_w9JNVQXeTcXEqIkaEVsxiBGLqVb77X/exec", FB_URL="https://balapkarung-6caab-default-rtdb.asia-southeast1.firebasedatabase.app";
@@ -131,7 +141,9 @@ const FALLBACK=[
 {q:"Sila ke-3 Pancasila berbunyi…",o:["Persatuan Indonesia","Kemanusiaan yang adil dan beradab","Keadilan sosial","Kerakyatan"],a:0},
 {q:"Hasil dari 144 : 12 = …",o:["10","11","12","14"],a:2},
 {q:"Zat hijau daun disebut…",o:["Klorofil","Stomata","Xilem","Kutikula"],a:0},
-{q:"Lambang sila ke-1 Pancasila adalah…",o:["Rantai","Bintang","Pohon beringin","Padi dan kapas"],a:1}];
+{q:"Lambang sila ke-1 Pancasila adalah…",o:["Rantai","Bintang","Pohon beringin","Padi dan kapas"],a:1},
+{q:"Hasil dari $\\frac{1}{2}+\\frac{1}{4}$ adalah …",o:["$\\frac{3}{4}$","$\\frac{2}{6}$","$\\frac{1}{8}$","$1$"],a:0},
+{q:"Rumus kimia air adalah …",o:["$\\ce{H2O}$","$\\ce{CO2}$","$\\ce{NaCl}$","$\\ce{O2}$"],a:0}];
 const $=id=>document.getElementById(id), sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const COLS=['#e63946','#1d6fe6','#f2c200','#8e44ad','#16a085','#ff7a1a'];
 let S={lv:1,w:'cerah',mode:'',name:'',g:'L',soal:FALLBACK.slice(),qi:0,code:'',host:false,id:'',players:[]};
@@ -175,6 +187,24 @@ const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 async function loadMapel(){try{const j=await gas({action:'getMapel'});const l=j.data||j.mapel||j;if(Array.isArray(l)&&l.length)return l}catch(e){}return['Soal Contoh']}
 async function loadMateri(m){try{const j=await gas({action:'getMateri',mapel:m});if(Array.isArray(j.data))return j.data}catch(e){}return[]}
 async function loadSoal(m,t){try{const j=await gas({action:'getSoal',mapel:m||'',materi:t||''});const l=(Array.isArray(j)?j:j.data||j.soal||[]).map(norm).filter(Boolean);if(l.length)return l}catch(e){}return FALLBACK.slice()}
+// ===== PENAMPIL SOAL: LaTeX, gambar, format dasar =====
+function imgUrl(u){u=String(u).trim();if(!/^https?:\/\//i.test(u))return'';
+ if(u.includes('drive.google.com')&&!u.includes('/thumbnail?')){const m=u.match(/[-\w]{25,}/);return m?'https://drive.google.com/thumbnail?id='+m[0]+'&sz=w1000':u}
+ if(u.includes('dropbox.com')){let v=u.replace(/([?&])dl=0/,'$1raw=1');if(!/[?&]raw=1/.test(v))v+=(v.includes('?')?'&':'?')+'raw=1';return v}
+ return u}
+const img=(u,al)=>{u=imgUrl(String(u).replace(/&amp;/g,'&'));return u?'<img src="'+esc(u)+'" alt="'+esc(al||'gambar soal')+'" loading="lazy" referrerpolicy="no-referrer">':''};
+function gal(v){if(!v)return'';const us=String(v).split(/[\s|]+|,(?=https?:)/).filter(u=>/^https?:/i.test(u));return us.length?'<div class="qi">'+us.map(u=>img(u,'')).join('')+'</div>':''}
+function tex(src,disp){if(window.katex){try{return katex.renderToString(src,{displayMode:disp,throwOnError:false,strict:false,output:'html'})}catch(e){}}return'<code>'+esc(src)+'</code>'}
+function rich(t){t=String(t==null?'':t);const M=[];
+ t=t.replace(/\\\$/g,'\u0001');
+ t=t.replace(/\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\]|\\\(([\s\S]+?)\\\)|\$([^$\n]+?)\$/g,(m,a,b,c,d)=>{const dp=a!=null||b!=null;M.push(tex(String(a??b??c??d).trim(),dp));return'\u0000'+(M.length-1)+'\u0000'});
+ t=esc(t);
+ t=t.replace(/!\[([^\]]*)\]\((https?:[^\s)]+)\)/g,(m,al,u)=>img(u,al));
+ t=t.replace(/\[(?:img|gambar):\s*(https?:[^\]\s]+)\s*\]/gi,(m,u)=>img(u,''));
+ t=t.replace(/(^|\s)(https?:\/\/[^\s<]+?\.(?:png|jpe?g|gif|webp|svg)(?:\?[^\s<]*)?)(?=\s|$)/gi,(m,sp,u)=>sp+img(u,''));
+ t=t.replace(/\*\*([^*\n]+?)\*\*/g,'<b>$1</b>').replace(/(^|[^*])\*([^*\n]+?)\*(?!\*)/g,'$1<i>$2</i>').replace(/\n/g,'<br>');
+ return t.replace(/\u0000(\d+)\u0000/g,(m,i)=>M[+i]).replace(/\u0001/g,'$')}
+function fixImgs(el){el.querySelectorAll('img').forEach(i=>{i.onerror=()=>{const x=document.createElement('span');x.className='ierr';x.textContent='🖼️ Gambar gagal dimuat';i.replaceWith(x)}})}
 const shuf=a=>{for(let i=a.length;i>1;){const j=Math.random()*i--|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const nextQ=()=>S.soal[S.qi++%S.soal.length];
 
@@ -267,10 +297,10 @@ function resetFlags(r){if(r.e>50)r.f50=0;if(r.e>20)r.f20=0;if(r.e>0)r.f0=0}
 function result(r,ok){if(r==me&&ok)say(pick(['Jawaban benar! Tenaga bertambah!','Mantap, tepat sekali!']));if(ok){if(state=='race'){r.pts=(r.pts||0)+PT;r.ok=(r.ok||0)+1;if(r==me)$('pts').textContent='⭐ '+r.pts+' poin'}r.e=Math.min(100,r.e+GAIN);resetFlags(r)}else{r.fall=1.7;if(r.e<=0)r.f0=0}}
 function trig(r){if(!chk(r))return;r.q=1;
  if(r.ai){setTimeout(()=>{if(state!='race')return;r.q=0;const ok=Math.random()<r.skill;result(r,ok);note(r.n+(ok?' menjawab BENAR ✅':' menjawab SALAH ❌'),ok)},1800+Math.random()*2500);return}
- const q=nextQ(),qp=$('qp');qp.innerHTML='<div class="qt">'+esc(q.q)+'</div>'+(q.img?'<img src="'+esc(q.img)+'" style="max-width:100%;max-height:26vh;border-radius:12px;align-self:center">':'')+q.o.map((o,i)=>`<button data-i="${i}">${'ABCD'[i]}. ${esc(o)}</button>`).join('');qp.classList.add('on');
+ const q=nextQ(),qp=$('qp');qp.innerHTML='<div class="qt">'+rich(q.q)+'</div>'+gal(q.img)+q.o.map((o,i)=>`<button data-i="${i}">${'ABCD'[i]}. ${rich(o)}</button>`).join('');fixImgs(qp);qp.scrollTop=0;qp.classList.add('on');
  qp.dataset.l=1;qp.classList.add('wait');let c=5;const cd=document.createElement('div');cd.className='cd';cd.textContent='⏳ Baca dulu… '+c;qp.prepend(cd);
  const tm=setInterval(()=>{c--;if(c>0)cd.textContent='⏳ Baca dulu… '+c;else{clearInterval(tm);cd.remove();qp.classList.remove('wait');delete qp.dataset.l}},1000);
- qp.onclick=e=>{const b=e.target.closest('button');if(!b||qp.dataset.l)return;qp.dataset.l=1;const ok=+b.dataset.i==q.a;b.classList.add(ok?'ok':'no');if(!ok)qp.querySelectorAll('button')[q.a].classList.add('ok');if(ok)snd(880,.25,'triangle');
+ qp.onclick=e=>{if(e.target.tagName=='IMG'&&!e.target.closest('button')){e.target.classList.toggle('zm');return}const b=e.target.closest('button');if(!b||qp.dataset.l)return;qp.dataset.l=1;const ok=+b.dataset.i==q.a;b.classList.add(ok?'ok':'no');if(!ok)qp.querySelectorAll('button')[q.a].classList.add('ok');if(ok)snd(880,.25,'triangle');
   setTimeout(()=>{qp.classList.remove('on');delete qp.dataset.l;r.q=0;result(r,ok);toast(ok?'+'+PT+' poin • +'+GAIN+' ⚡':'Terjatuh! 💥')},ok?650:1100)}}
 function note(t,ok){const d=document.createElement('div');d.className='nt '+(ok?'y':'n');d.textContent=t;$('feed').prepend(d);setTimeout(()=>d.remove(),3000)}
 function toast(t){const e=$('toast');e.textContent=t;e.classList.remove('s');void e.offsetWidth;e.classList.add('s')}
@@ -281,7 +311,7 @@ function finish(r){r.fin=r.fin||Date.now();if(winner)return;
  if(S.mode=='room'&&!r.remote){if(!r.claim){r.claim=1;claimWin(r)}return}
  winner=r;endRace()}
 async function claimWin(r){let w=null;
- try{await fb(S.code+'/winner','PUT',r.id);w=await fb(S.code+'/winner')}catch(e){}
+ try{await fb(S.code+'/winners/'+S.cur,'PUT',r.id);w=await fb(S.code+'/winners/'+S.cur)}catch(e){}
  if(winner)return;const wr=racers.find(x=>x.id==w)||r;
  if(wr.remote){wr.p=wr.tp=L;wr.fin=wr.fin||Date.now()}
  winner=wr;endRace()}
@@ -338,6 +368,7 @@ function updWx(dt){const w=WX[wxN];
 // ===== ALUR =====
 async function begin(list){
  winner=null;state='intro';stopCele();show('');$('hud').style.display='none';
+ if(S.mode=='room')fb(S.code+'/players/'+S.id,'PATCH',{p:0,e:100,fin:null}).catch(()=>{});
  buildWorld(list.length);applyWeather(S.w);racers=list.map((l,i)=>mkRacer(l,i,list.length));me=racers.find(r=>r.id==S.id)||racers[0];
  $('pts').textContent='⭐ 0 poin';$('prog').innerHTML=racers.map(r=>`<i style="background:${r.col};left:0"></i>`).join('');
  camAuto=false;camFocus=me;camMode='wide';cam.position.set(-16,8,14);look.set(0,1,-5);
@@ -347,20 +378,20 @@ async function begin(list){
  $('card').style.display='none';fadeAp();camFocus=me;camMode='wide';await sleep(1000);
  camMode='back';$('hud').style.display='block';updEn();
  for(const t of['3','2','1','GO!']){const b=$('big');b.textContent=t;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');snd(t=='GO!'?880:440,.25);if(t=='GO!'){speak('Mulai! Lompat yang tinggi!');applause(4500,.9)}await sleep(900)}
- $('big').textContent='';toast('Level '+S.lv+' • '+WX[wxN].e);state='race';cmN=T+7;lastLead=null;nearSaid=0;ap20=0;camAuto=true;camT=3;camIdx=1;
+ $('big').textContent='';toast((S.mode=='room'&&S.n>1?'Ronde '+(S.cur+1)+'/'+S.n+' • ':'')+'Level '+S.lv+' • '+WX[wxN].e);state='race';cmN=T+7;lastLead=null;nearSaid=0;ap20=0;camAuto=true;camT=3;camIdx=1;
  if(S.mode=='room')syncTimer=setInterval(sync,220)}
 function updEn(){const e=me.e;$('enb').firstChild.style.width=e+'%';$('enb').firstChild.style.background=e>50?'#3ddc5a':e>20?'#f2c200':'#ff4a4a';$('ent').textContent='⚡ Tenaga '+Math.round(e)+'%'}
 function hud(){updEn();const t=terr(me.p),vm=me.vm||0,rk=(t.n||t.d||t.l)&&vm>3.2;$('spt').textContent=terrLabel(me.p)+' • 💨 '+vm.toFixed(1)+' m/dtk'+(rk?' ⚠️ rawan jatuh':'');const sb=$('spb').firstChild;sb.style.width=Math.min(100,vm/6.5*100)+'%';sb.style.background=rk?'#ff4a4a':vm>3.2?'#f2c200':'#3ddc5a';const s=racers.slice().sort((a,b)=>b.p-a.p);$('rank').textContent=racers.length>1?'Posisi '+(s.indexOf(me)+1)+'/'+racers.length:Math.round(me.p)+' / '+L+' m';
  racers.forEach((r,i)=>$('prog').children[i].style.left=Math.min(100,r.p/L*100)+'%')}
-function endRace(){state='end';clearInterval(syncTimer);winner.cel=1;clap(9500,1);celebrate();racers.forEach(r=>{if(r!=winner)r.fall=0});camFocus=winner;camMode='orbit';camAuto=false;
+function endRace(){state='end';if(S.mode=='room')fb(S.code+'/players/'+S.id+'/rp/'+S.cur,'PUT',(me.pts||0)*MULT).catch(()=>{});clearInterval(syncTimer);winner.cel=1;clap(9500,1);celebrate();racers.forEach(r=>{if(r!=winner)r.fall=0});camFocus=winner;camMode='orbit';camAuto=false;
  $('hud').style.display='none';$('qp').classList.remove('on');fanfare();boom();speak(winner.n+' juara balap karung! Selamat!');
  if(S.mode=='room'&&me==winner)sync();
- setTimeout(()=>{$('wn').textContent=winner.n+(winner==me?' (Kamu!)':'');$('rk').innerHTML=racers.slice().sort((a,b)=>(b==winner)-(a==winner)||b.p-a.p).map(r=>`<li>${r.n} — ${Math.round(r.p)} m</li>`).join('');$('next').style.display=(S.mode!='room'&&winner==me&&S.lv<10)?'':'none';showScore();show('s-end')},3500)}
+ setTimeout(()=>{$('wn').textContent=winner.n+(winner==me?' (Kamu!)':'');$('rk').innerHTML=racers.slice().sort((a,b)=>(b==winner)-(a==winner)||b.p-a.p).map(r=>`<li>${r.n} — ${Math.round(r.p)} m</li>`).join('');$('next').style.display=(S.mode!='room'&&winner==me&&S.lv<10)?'':'none';showScore();show('s-end');if(S.mode=='room'){const b=$('cele').querySelector('.bn');b&&b.remove();roomEnd()}else endUI0()},3500)}
 function showScore(){const b=me.ok||0,raw=me.pts||0,tot=raw*MULT;
  $('sk').innerHTML='<div>✅ Benar: <b>'+b+'</b> soal × '+PT+' = <b>'+raw+'</b></div><div>⭐ '+raw+' × '+MULT+' = <b style="font-size:30px;color:#ff7a1a">'+tot+' poin</b></div><div id="sv" style="font-size:13px;font-weight:600"></div>';
  if(tot>0){$('sv').textContent='Menyimpan poin…';gas({action:'saveHasil',nama:S.name,kelas:S.kelas||'-',point:tot}).then(j=>{$('sv').textContent=j.status=='ok'?'💾 Tersimpan! Total poinmu: '+j.point_total:'⚠️ Gagal menyimpan poin'}).catch(()=>{$('sv').textContent='⚠️ Gagal menyimpan poin'})}}
-function celebrate(){const c=$('cele');c.classList.add('on');
- c.innerHTML='<div class="bn">🏆 JUARA! 🏆<small>'+winner.n.replace(/</g,'&lt;')+(winner==me?' (Kamu!) 🎉':' 🎉')+'</small></div>';
+function celebrate(ttl){const c=$('cele');c.classList.add('on');
+ c.innerHTML='<div class="bn">'+(ttl||'🏆 JUARA! 🏆')+'<small>'+winner.n.replace(/</g,'&lt;')+(winner==me?' (Kamu!) 🎉':' 🎉')+'</small></div>';
  for(let i=0;i<3;i++){const r=document.createElement('div');r.className='ring';r.style.animationDelay=i*.35+'s';c.appendChild(r)}
  const E=['🎉','🎊','⭐','🏅','👏','✨','🥳'];let k=0;clearInterval(celT);
  const add=()=>{const e=document.createElement('div');e.className='em';e.textContent=E[Math.random()*E.length|0];e.style.left=Math.random()*100+'%';e.style.fontSize=(22+Math.random()*26)+'px';e.style.animationDuration=(2.2+Math.random()*2)+'s';c.appendChild(e);setTimeout(()=>e.remove(),4500)};
@@ -384,26 +415,32 @@ function boom(){const n=400,g=new THREE.BufferGeometry(),pos=new Float32Array(n*
 const fb=(p,m='GET',b)=>fetch(FB_URL+'/rooms/'+p+'.json',{method:m,body:b!==undefined?JSON.stringify(b):undefined}).then(r=>r.json());
 async function sync(){if(!S.code)return;try{
  await fb(S.code+'/players/'+S.id,'PATCH',{p:me.p,e:me.e,fin:me.fin||null});
- const [ps0,wid]=await Promise.all([fb(S.code+'/players'),fb(S.code+'/winner')]),ps=ps0||{};
+ const [ps0,wid]=await Promise.all([fb(S.code+'/players'),fb(S.code+'/winners/'+S.cur)]),ps=ps0||{};
  racers.forEach(r=>{if(r.remote&&ps[r.id]){r.tp=ps[r.id].p||0;r.e=ps[r.id].e}});
  if(wid&&!winner){const w=racers.find(x=>x.id==wid);if(w){if(w.remote){w.p=w.tp=L;w.fin=w.fin||Date.now()}winner=w;endRace()}}}catch(e){}}
 let poll=0;
 async function lobby(){show('s-lobby');$('lc').textContent=S.code;$('lstart').style.display=S.host?'':'none';$('lw').style.display=S.host?'none':'';
  clearInterval(poll);poll=setInterval(async()=>{try{const r=await fb(S.code);if(!r)return;const ps=Object.entries(r.players||{});
-  $('lp').innerHTML=ps.map(([k,v])=>`<li>${v.n}</li>`).join('');
-  if(r.st=='go'){clearInterval(poll);S.soal=r.soal||S.soal;S.qi=0;S.w=r.w||'cerah';S.lv=r.lv||1;begin(ps.sort((a,b)=>a[0]<b[0]?-1:1).map(([k,v])=>({id:k,n:v.n,g:v.g,remote:k!=S.id})))}}catch(e){}},1000)}
+  $('lp').innerHTML=ps.map(([k,v])=>`<li>${esc(v.n)}</li>`).join('');const wsl=Object.values(r.ws||{});$('lr').textContent=wsl.length?'🏁 '+wsl.length+' pertandingan: '+wsl.map(w=>WX[w]?WX[w].e.split(' ')[0]:w).join(' '):'';
+  if(r.st=='go'){clearInterval(poll);S.soal=r.soal||S.soal;S.qi=0;S.ws=Object.values(r.ws||{});if(!S.ws.length)S.ws=['cerah'];S.n=r.n||S.ws.length;S.cur=r.cur||0;S.w=S.ws[S.cur]||'cerah';S.lv=r.lv||1;S.rl=ps.sort((a,b)=>a[0]<b[0]?-1:1).map(([k,v])=>({id:k,n:v.n,g:v.g,remote:k!=S.id}));begin(S.rl.map(x=>({...x})))}}catch(e){}},1000)}
 
 // ===== UI =====
 const AINAMES=['Budi','Sari','Doni','Rina','Joko','Wati'];
 document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{S.mode=b.dataset.mode;show('s-name')});
 document.querySelectorAll('.gb').forEach(b=>b.onclick=()=>{document.querySelectorAll('.gb').forEach(x=>x.classList.toggle('sel',x==b));S.g=b.dataset.g});
 $('nm-ok').onclick=()=>{S.name=$('nm').value.trim()||'Pemain';S.kelas=$('kl').value.trim()||'-';S.id='p'+(Date.now()%1e7)+(Math.random()*99|0);if(S.mode=='room')show('s-room');else openSoal()};
-function openSoal(){show('s-soal');$('sinfo').textContent='📚 '+($('mp').value||'-')+' • '+($('mtr').value||'Semua materi')}
+const WDEF=['cerah','berawan','hujan','badai','salju','semi','mendung'];
+function renderWl(){const n=+$('rn').value,prev=[...document.querySelectorAll('.wr')].map(x=>x.value),w=$('wl');w.innerHTML='';
+ for(let i=0;i<n;i++){const d=document.createElement('div'),t=document.createElement('div');t.className='wl';t.textContent='Pertandingan '+(i+1);const sl=document.createElement('select');sl.className='wr';[...$('wt').options].forEach(o=>sl.add(new Option(o.text,o.value)));sl.value=prev[i]||WDEF[i%WDEF.length];d.append(t,sl);w.appendChild(d)}}
+$('rn').onchange=renderWl;
+for(let i=1;i<=5;i++)$('rn').add(new Option(i+' pertandingan',i));renderWl();
+function openSoal(){show('s-soal');const rm=S.mode=='room';$('wt').style.display=rm?'none':'';$('rnw').style.display=rm?'flex':'none';$('sinfo').textContent='📚 '+($('mp').value||'-')+' • '+($('mtr').value||'Semua materi')}
 async function fillMateri(){const t=$('mtr');t.innerHTML='';t.add(new Option('📖 Semua materi',''));$('hinfo').textContent='Memuat materi…';const l=await loadMateri($('mp').value);l.forEach(m=>t.add(new Option(m,m)));$('hinfo').textContent=l.length?l.length+' materi tersedia':''}
 async function initHome(){const s=$('mp');s.innerHTML='<option>Memuat…</option>';$('hinfo').textContent='Memuat mata pelajaran…';const l=await loadMapel();s.innerHTML='';l.forEach(m=>s.add(new Option(m,m)));await fillMateri()}
 $('mp').onchange=fillMateri;
 $('so-ok').onclick=async()=>{$('sinfo').textContent='Memuat soal…';S.soal=shuf(await loadSoal($('mp').value,$('mtr').value));S.qi=0;S.lv=+$('lv').value;S.w=$('wt').value;if(S.w=='acak')S.w=shuf(Object.keys(WX))[0];
- if(S.mode=='room'){S.code=String(1000+Math.random()*9000|0);S.host=true;await fb(S.code,'PUT',{st:'lobby',soal:S.soal,w:S.w,lv:S.lv});await fb(S.code+'/players/'+S.id,'PUT',{n:S.name,g:S.g});lobby();return}
+ if(S.mode=='room'){S.ws=[...document.querySelectorAll('.wr')].map(x=>x.value=='acak'?shuf(Object.keys(WX))[0]:x.value);S.n=S.ws.length;S.cur=0;S.w=S.ws[0]}
+ if(S.mode=='room'){S.code=String(1000+Math.random()*9000|0);S.host=true;await fb(S.code,'PUT',{st:'lobby',soal:S.soal,ws:S.ws,n:S.n,cur:0,lv:S.lv});await fb(S.code+'/players/'+S.id,'PUT',{n:S.name,g:S.g});lobby();return}
  const l=[{id:S.id,n:S.name,g:S.g}];if(S.mode=='ai')shuf(AINAMES.slice()).slice(0,3).forEach((n,i)=>l.push({id:'ai'+i,n,g:i%2?'P':'L',ai:1}));
  begin(l)};
 $('rm-new').onclick=openSoal;
@@ -418,7 +455,33 @@ $('tap').addEventListener('pointerdown',e=>{e.preventDefault();hopR(me)});
 addEventListener('keydown',e=>{if(e.code=='Space'||e.code=='ArrowUp'){e.preventDefault();hopR(me)}});
 $('again').onclick=()=>{S.qi=0;if(S.mode=='room'){show('s-home');S.code=''}else{const l=racers.map(r=>({id:r.id,n:r.n,g:r.g,ai:r.ai}));begin(l)}};
 $('next').onclick=()=>{S.lv++;$('again').onclick()};
-$('menu').onclick=()=>{state='idle';stopCele();fadeAp();S.code='';show('s-home')};
+$('menu').onclick=()=>{clearInterval(rtmr);state='idle';stopCele();fadeAp();S.code='';show('s-home')};
+
+// ===== KLASEMEN ROOM (akumulasi) =====
+let rtmr=0;
+function endUI0(){$('rk').style.display='';$('rt').style.display='none';$('again').style.display='';$('et').textContent='🏆 JUARA!'}
+async function board(){const [p0,w0]=await Promise.all([fb(S.code+'/players'),fb(S.code+'/winners')]),ps=p0||{},wn=Object.values(w0||{});
+ const rows=S.rl.map(x=>{const rp=(ps[x.id]||{}).rp||{};let tot=0;for(let i=0;i<=S.cur;i++)tot+=+(rp[i]||0);return{id:x.id,n:x.n,tot,now:+(rp[S.cur]||0),has:rp[S.cur]!=null,wins:wn.filter(w=>w==x.id).length}});
+ rows.sort((a,b)=>b.tot-a.tot||b.wins-a.wins||(a.n<b.n?-1:1));return rows}
+function drawBoard(rows,crown){$('tt').innerHTML=rows.map((r,i)=>`<li${r.id==S.id?' style="color:#ff7a1a"':''}>${i==0&&crown?'👑 ':''}${esc(r.n)} — <b>${r.tot}</b> poin <small>(+${r.now} • 🏅${r.wins})</small></li>`).join('')}
+function roomEnd(){const last=S.cur>=S.n-1;
+ $('rk').style.display='none';$('rt').style.display='';$('next').style.display='none';$('again').style.display='none';
+ $('et').textContent=last?'🏁 Ronde terakhir selesai':'🏁 Ronde '+(S.cur+1)+'/'+S.n+' selesai';
+ $('rnext').style.display=(S.host&&!last)?'':'none';$('rnext').textContent='▶ Mulai Ronde '+(S.cur+2)+'/'+S.n;
+ $('rw').textContent=last?'⏳ Menghitung juara umum…':S.host?'':'Menunggu pembuat room memulai ronde berikutnya…';
+ clearInterval(rtmr);let fin=0;const t0=Date.now();
+ const tick=async()=>{try{const [rows,cur]=await Promise.all([board(),fb(S.code+'/cur')]);drawBoard(rows,false);
+  if(!last&&cur>S.cur){nextRound(cur);return}
+  if(last&&!fin&&(rows.every(r=>r.has)||Date.now()-t0>8000)){fin=1;clearInterval(rtmr);$('rw').textContent='';grand(rows)}}catch(e){}};
+ tick();rtmr=setInterval(tick,1200)}
+function nextRound(cur){if(cur<=S.cur)return;clearInterval(rtmr);S.cur=cur;S.w=S.ws[cur]||'cerah';begin(S.rl.map(x=>({...x})))}
+$('rnext').onclick=async()=>{const b=$('rnext');b.style.display='none';let ok=false;try{ok=(await fb(S.code+'/cur','PUT',S.cur+1))===S.cur+1}catch(e){}
+ if(ok)nextRound(S.cur+1);else{b.style.display='';toast('Gagal memulai ronde, coba lagi')}};
+function grand(rows){const c=rows[0];drawBoard(rows,true);$('et').textContent='👑 JUARA UMUM!';$('wn').textContent=c.n+(c.id==S.id?' (Kamu!)':'')+' • '+c.tot+' poin';
+ const w=racers.find(r=>r.id==c.id);if(w){racers.forEach(r=>r.cel=0);winner=w;w.cel=1;camFocus=w;camMode='orbit';camAuto=false}
+ if(confetti){world.remove(confetti);confetti=null}
+ celebrate('👑 JUARA UMUM! 👑');clap(9500,1);fanfare();boom();speak(c.n+' juara umum! Selamat!');
+ setTimeout(()=>{const b=$('cele').querySelector('.bn');b&&b.remove()},3500)}
 
 // ===== LOOP =====
 (function loop(){requestAnimationFrame(loop);const dt=Math.min(.05,clock.getDelta());T+=dt;
